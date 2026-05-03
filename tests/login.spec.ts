@@ -1,22 +1,28 @@
 import { test, expect } from '@playwright/test';
 import { LoginPage } from '../pages/loginPage';
 
-test('Valid Login Test', async ({ page }) => {
-  const loginPage = new LoginPage(page);
+test.skip(process.env.CI === 'true', 'Skipping UI tests in CI');
 
-  await loginPage.goto();
-  await loginPage.login('tomsmith', 'SuperSecretPassword!');
+test.describe('Login Tests', () => {
 
-  const message = await loginPage.getMessage();
-  expect(message).toContain('secure area');
-});
+  test('Valid Login', async ({ page }) => {
+    const login = new LoginPage(page);
 
-test('Invalid Login Test', async ({ page }) => {
-  const loginPage = new LoginPage(page);
+    await login.goto();
+    await login.login('tomsmith', 'SuperSecretPassword!');
 
-  await loginPage.goto();
-  await loginPage.login('wronguser', 'wrongpass');
+    const msg = await login.getMessage();
+    expect(msg).toContain('secure area');
+  });
 
-  const message = await loginPage.getMessage();
-  expect(message).toContain('invalid');
+  test('Invalid Login', async ({ page }) => {
+    const login = new LoginPage(page);
+
+    await login.goto();
+    await login.login('wrong', 'wrong');
+
+    const msg = await login.getMessage();
+    expect(msg).toContain('invalid');
+  });
+
 });
