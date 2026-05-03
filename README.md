@@ -80,4 +80,4 @@ API tests execute in CI, while UI tests are skipped to avoid instability from ex
 
 ## 👨‍💻 Author
 
-Suyash Kumar Jaiswal
+Srishti Jaiswal
